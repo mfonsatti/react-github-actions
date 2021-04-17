@@ -16,6 +16,11 @@ jobs:
       run: yarn install
     - name: Generate build
       run: yarn build
+    - name: Upload build folder to Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: build
+        path: build
 
   deploy:
     needs: build
@@ -29,7 +34,11 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-west-2
-
+    - name: Download build folder from Artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: build
     - name: Copy files to the production website with the AWS CLI
       run: aws s3 sync . s3://s3cdkstack-reactgithubactionbucket1ce57800-6iwjltm1fz93
+      working-directory: build
 
