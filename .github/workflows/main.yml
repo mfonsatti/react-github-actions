@@ -1,0 +1,35 @@
+name: GitHub Actions Demo
+on: 
+  pull_request:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone repository
+      uses: actions/checkout@v2
+    - name: Install Node.js
+      uses: actions/setup-node@v2
+    - name: Install dependencies
+      run: yarn install
+    - name: Generate build
+      run: yarn build
+
+  deploy:
+    needs: build
+    name: Upload to Amazon S3
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Configure AWS credentials from Production account
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-west-2
+
+    - name: Copy files to the production website with the AWS CLI
+      run: aws s3 sync ./build s3://s3cdkstack-reactgithubactionbucket1ce57800-6iwjltm1fz93
+
