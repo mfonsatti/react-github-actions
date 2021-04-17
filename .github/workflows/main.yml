@@ -33,8 +33,7 @@ jobs:
       with:
         name: react-github-actions-build
     - name: Print the content of the Artifact
-        shell: bash
-        run: ls react-github-actions-build
+      run: ls react-github-actions-build
 
     # - name: Configure AWS credentials from Production account
     #   uses: aws-actions/configure-aws-credentials@v1
