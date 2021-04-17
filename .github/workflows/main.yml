@@ -31,5 +31,5 @@ jobs:
         aws-region: us-west-2
 
     - name: Copy files to the production website with the AWS CLI
-      run: aws s3 sync ./build s3://s3cdkstack-reactgithubactionbucket1ce57800-6iwjltm1fz93
+      run: aws s3 sync build/ s3://s3cdkstack-reactgithubactionbucket1ce57800-6iwjltm1fz93
 
